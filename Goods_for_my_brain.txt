@@ -1,0 +1,93 @@
+Обзор вашего прогресса и ресурсы для изучения SQLite и Python
+Ваш текущий прогресс
+Вы успешно:
+
+Установили и настроили WSL с Ubuntu
+
+Освоили базовые команды Linux в терминале
+
+Установили Python и SQLite
+
+Создали свою первую базу данных SQLite
+
+Начали изучение работы с SQLite через Python
+
+Таблица ресурсов для дальнейшего изучения
+Тема	Уровень	Ресурсы	Практические примеры
+Основы SQLite с Python	Начинающий	Документация sqlite3, SQLite Tutorial	Создание таблиц, CRUD-операции (Create, Read, Update, Delete)
+Виртуальные окружения Python	Начинающий	Python Virtual Environments Guide	Создание изолированных сред для проектов
+Pandas для анализа данных	Средний	Pandas Documentation, 10 minutes to pandas	Анализ CSV, работа с DataFrame
+Визуализация данных	Средний	Matplotlib Tutorials, Seaborn Guide	Построение графиков и диаграмм
+Проекты на Python	Практика	Real Python Projects, FreeCodeCamp Projects	Создание полноценных приложений
+Примеры для практики
+1. Расширенная работа с SQLite
+python
+import sqlite3
+
+# Подключение к базе данных
+conn = sqlite3.connect('test.db')
+cursor = conn.cursor()
+
+# Создание таблицы с дополнительными полями
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE,
+    age INTEGER,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+)
+''')
+
+# Вставка нескольких записей
+users = [
+    ('Анна', 'anna@example.com', 25),
+    ('Петр', 'petr@example.com', 32),
+    ('Мария', 'maria@example.com', 28)
+]
+
+cursor.executemany(
+    "INSERT INTO users (name, email, age) VALUES (?, ?, ?)",
+    users
+)
+
+# Выборка данных с условием
+cursor.execute("SELECT * FROM users WHERE age > 25")
+adult_users = cursor.fetchall()
+print("Пользователи старше 25 лет:", adult_users)
+
+# Сохранение изменений и закрытие соединения
+conn.commit()
+conn.close()
+2. Использование контекстного менеджера
+python
+import sqlite3
+
+# Автоматическое закрытие соединения
+with sqlite3.connect('test.db') as conn:
+    cursor = conn.cursor()
+    
+    # Обновление записи
+    cursor.execute(
+        "UPDATE users SET age = ? WHERE name = ?",
+        (30, 'Анна')
+    )
+    
+    # Удаление записи
+    cursor.execute("DELETE FROM users WHERE name = ?", ('Петр',))
+Полезные команды для отладки
+bash
+# Просмотр содержимого базы данных
+sqlite3 test.db .tables        # Показать все таблицы
+sqlite3 test.db .schema users  # Показать структуру таблицы users
+sqlite3 test.db "SELECT * FROM users"  # Показать все данные
+Рекомендуемые следующие шаги
+Освойте основные SQL-запросы (SELECT, INSERT, UPDATE, DELETE)
+
+Изучите работу с исключениями в SQLite
+
+Попрактикуйтесь в создании связей между таблицами
+
+Изучите использование транзакций для безопасности данных
+
+Ваш текущий прогресс отличный! Продолжайте в том же духе, и вскоре вы сможете создавать полноценные приложения с базами данных.
